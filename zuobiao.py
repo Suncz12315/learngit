@@ -88,5 +88,25 @@ for i in range(node_num+1):
         t_min[i][j] = t_min_m
 for i in range(1,node_num + 1):
     t_min[i][0] = dist[i][0]/v_max
+
 print(t_min)
 
+####动态规划求最短路径########
+n = node_num+1
+cnt = 1<<(n-1)
+FLOAT_MAX = sys.float_info.max
+a_lis = [[FLOAT_MAX]*cnt]*n
+dp = np.array(a_lis)
+for i in range(n):
+    dp[i][0] = t_min[i][0]
+for i in range(cnt):
+    for j in range(n):
+        for k in range(n):
+            if(i&(1<<(k-1))):
+               dp[j][i] = min(dp[j][i],t_min[j][k]+dp[k][i-(1<<(k-1))])
+res = FLOAT_MAX
+for i in range(n):
+    res = min(dp[i][cnt-1]+t_min[0][i],res)
+print(res)
+               
+                              
